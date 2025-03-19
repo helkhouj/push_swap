@@ -4,19 +4,15 @@ int main(int argc, char **argv)
 {
     t_stack *a;
     t_stack *b;
-    int i;
 
     if (argc < 2)
         return (0); 
 
     a = init_stack();
     b = init_stack();
-    i = 1;
-    while (i < argc)
-    {
-        push(a, atoi(argv[i]));
-        i++;
-    }
+
+    if (!parse_input(a, argv))
+        return (1);
 
     print_stack(a, 'A');
 
