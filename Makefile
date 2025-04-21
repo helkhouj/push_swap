@@ -1,20 +1,60 @@
-NAME = push_swap
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: helkhouj <helkhouj@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/04/21 11:39:40 by helkhouj          #+#    #+#              #
+#    Updated: 2025/04/21 11:39:41 by helkhouj         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.c stack.c stack_utils.c operations.c sorting_small.c input_validation.c
+LIBFTDIR = ./libft
+PRINTFDIR = ./ft_printf
+
+SRCS = push_swap.c
+
+BONUS = 	ft_checker.c get_next_line.c  get_next_line_utils.c ft_join_args_bns.c ft_strjoin_bonus.c \
+			check_arguments.c creat_linked_list.c ft_has_duplicates_bns.c ft_strdup_bonus.c
+
 OBJS = $(SRCS:.c=.o)
+BOBJS = $(BONUS:.c=.o)
+DELETE = rm -f
+NAME = push_swap
+BONUS_NAME = checker
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+	make -C $(LIBFTDIR)
+	make -C $(PRINTFDIR)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFTDIR)/libft.a $(PRINTFDIR)/printf.a -o $(NAME)
+
+
+bonus: $(BONUS_NAME)
+
+$(BONUS_NAME): $(BOBJS)
+	make -C $(LIBFTDIR)
+	make -C $(PRINTFDIR)
+	$(CC) $(CFLAGS) $(BOBJS) $(LIBFTDIR)/libft.a $(PRINTFDIR)/printf.a -o $(BONUS_NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	make clean -C $(LIBFTDIR)
+	make clean -C $(PRINTFDIR)
+	$(DELETE) $(OBJS) $(BOBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	make fclean -C $(LIBFTDIR)
+	make fclean -C $(PRINTFDIR)
+	$(DELETE) $(NAME) $(BONUS_NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re bonus
